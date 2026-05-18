@@ -35,3 +35,14 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
+
+const { db } =
+  require("./firebase/admin");
+
+  const providerRoutes =
+  require("./routes/providerRoutes");
+
+  app.use(
+  "/provider",
+  providerRoutes
+);
