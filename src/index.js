@@ -6,30 +6,32 @@ const cors = require("cors");
 const app = express();
 
 app.use(cors());
-
 app.use(express.json());
 
-app.get("/", (_, res) => {
+/**
+ * Health route (DOIT être en haut)
+ */
+app.get("/health", (_, res) => {
+  res.json({
+    status: "ok",
+    server: "provider-backend",
+  });
+});
 
+/**
+ * Root route
+ */
+app.get("/", (_, res) => {
   res.json({
     status: "Backend running",
   });
 });
 
-const PORT =
-  process.env.PORT || 3000;
+/**
+ * Start server (TOUJOURS EN DERNIER)
+ */
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-
-  console.log(
-    `Server running on port ${PORT}`
-  );
-});
-
-app.get("/health", (_, res) => {
-
-  res.json({
-    status: "ok",
-    server: "provider-backend",
-  });
+  console.log("Server running on port", PORT);
 });
