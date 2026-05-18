@@ -9,7 +9,7 @@ app.use(cors());
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
 
   res.json({
     status: "Backend running",
@@ -24,4 +24,12 @@ app.listen(PORT, () => {
   console.log(
     `Server running on port ${PORT}`
   );
+});
+
+app.get("/health", (_, res) => {
+
+  res.json({
+    status: "ok",
+    server: "provider-backend",
+  });
 });
