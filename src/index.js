@@ -2,11 +2,17 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const providerRoutes =
+  require("./routes/providerRoutes");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(
+  "/provider",
+  providerRoutes
+);
 
 /**
  * Health route (DOIT être en haut)
@@ -35,14 +41,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
-
-const { db } =
-  require("./firebase/admin");
-
-  const providerRoutes =
-  require("./routes/providerRoutes");
-
-  app.use(
-  "/provider",
-  providerRoutes
-);

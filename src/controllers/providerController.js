@@ -16,8 +16,8 @@ async function updateProviderLocation(
 
     if (
       !providerId ||
-      !latitude ||
-      !longitude
+      typeof latitude !== "number" ||
+      typeof longitude !== "number"
     ) {
 
       return res.status(400).json({
