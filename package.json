@@ -1,11 +1,15 @@
 {
-  "name": "backend",
+  "name": "glamgo-provider-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "GlamGo provider API — location sync, nearby providers, push tokens, categories",
+  "main": "src/index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "check": "node -e \"require('./src/firebase/admin')\""
+  },
+  "engines": {
+    "node": ">=20"
   },
   "keywords": [],
   "author": "",
