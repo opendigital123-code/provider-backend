@@ -1,42 +1,46 @@
+const fs = require("fs");
+const path = require("path");
+
 const admin =
   require("firebase-admin");
 
-if (
-  !process.env.FIREBASE_SERVICE_ACCOUNT
-) {
+function loadServiceAccount() {
+  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    return JSON.parse(
+      process.env.FIREBASE_SERVICE_ACCOUNT
+    );
+  }
 
-  throw new Error(
-    "FIREBASE_SERVICE_ACCOUNT is required"
-  );
-}
-
-let serviceAccount;
-
-try {
-
-  serviceAccount =
-    JSON.parse(
-      process.env
-        .FIREBASE_SERVICE_ACCOUNT
+  const credentialsPath =
+    process.env.GOOGLE_APPLICATION_CREDENTIALS ||
+    path.join(
+      __dirname,
+      "../../firebase/serviceAccountKey.json"
     );
 
-} catch (error) {
+  if (fs.existsSync(credentialsPath)) {
+    return JSON.parse(
+      fs.readFileSync(
+        credentialsPath,
+        "utf8"
+      )
+    );
+  }
 
   throw new Error(
-    "FIREBASE_SERVICE_ACCOUNT must be valid JSON. Check the backend environment variable."
+    "Firebase credentials missing. Set FIREBASE_SERVICE_ACCOUNT or place firebase/serviceAccountKey.json"
   );
 }
 
-admin.initializeApp({
-
-  credential:
-    admin.credential.cert(
-      serviceAccount
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(
+      loadServiceAccount()
     ),
-});
+  });
+}
 
-const db =
-  admin.firestore();
+const db = admin.firestore();
 
 module.exports = {
   admin,
